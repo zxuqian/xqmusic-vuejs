@@ -6,7 +6,19 @@
   </head>
   <body>
     <div id="app">
-      {{ message }}
+      {{ message | capitalize }}
+      <a :title="message" href="#">This is a link</a>
+      <p v-if="seen">You can see me</p>
+      <p v-if="notSeen">You cannot see me</p>
+      <ol>
+        <todo-item 
+          v-for="todo in todos"
+          :todo="todo"
+          :key="todo.id"></todo-item>
+      </ol>
+      <button @click="reverseMessage">Reverse</button>
+      <input v-model="message" />
+      <p>Computed Text {{ computedMessage }}</p>
     </div>
     <!-- built files will be auto injected -->
   </body>
