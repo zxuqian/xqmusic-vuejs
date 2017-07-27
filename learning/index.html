@@ -19,6 +19,46 @@
       <button @click="reverseMessage">Reverse</button>
       <input v-model="message" />
       <p>Computed Text {{ computedMessage }}</p>
+      <div class="orginal" :class="classObject">class</div>
+      <div :class="computedClassObject">computed class</div>
+      <div :class="[activeClass, errorClass]">Array class</div>
+      <div :class="[isActive ? activeClass : '', errorClass]">Conditional class</div>
+      <div :class="[{ active: isActive }, errorClass]">Simplified conditional class</div>
+      <div :style="styleObject">Styled text</div>
+      <template v-if="ok">
+        <h1>Rendered</h1>
+        <p>Hello World!</p>
+        <p>Second paragraph</p>
+      </template>
+      <div v-else>bbbbb</div>
+      <template v-if="ok">
+        <label>Username</label>
+        <input type="text" placeholder="Enter your username" key="username-input">
+      </template>
+      <template v-else>
+        <label>Email</label>
+        <input type="text" placeholder="Enter your email" key="email-input">
+      </template>
+      <button @click="toggleInput">Toggle</button>
+      <ul>
+        <li v-for="(todo, index) in todos">{{ message }} - {{ index }} - {{ todo.text }}</li>
+      </ul>
+      <ul>
+        <template v-for="(value, key) in username">
+          <li>{{ key }}: {{ value }}</li>
+          <li> separator............</li>
+        </template>
+      </ul>
+      <ul>
+        <li v-for="n in 10">{{ n }}</li>
+      </ul>
+
+      <input id="one" type="radio" value="One" v-model="picked">
+      <label for="one">One</label>
+      <input id="two" type="radio" value="Two" v-model="picked">
+      <label for="two">Two</label>
+      <br />
+      <span>Picked: {{ picked }}</span>
     </div>
     <!-- built files will be auto injected -->
   </body>
