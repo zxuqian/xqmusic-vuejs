@@ -7,8 +7,17 @@ Vue.config.productionTip = false
 
 Vue.component('todo-item', {
   props: ['todo'],
-  template: '{{ todo.text }}</li>'
+  template: '<li>{{ todo.text }}</li>'
 })
+
+Vue.component('my-row', {
+  template: "<p>aaa</p>"
+})
+
+var localComponent = {
+  template: "<h1>This is a local component</h1>"
+}
+
 
 /* eslint-disable no-new */
 new Vue({
@@ -67,6 +76,10 @@ new Vue({
         active: this.classObject.active
       }
     }
+  },
+
+  components: {
+    'local-component': localComponent
   }
   //template: '<App/>',
   //components: { App }
