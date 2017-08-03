@@ -5,6 +5,70 @@ import Vue from 'vue'
 
 Vue.config.productionTip = false
 
+//Async
+Vue.component('async-example', function(resolve, reject) {
+  setTimeout(function(){
+    resolve({template: '<p>I am async</p>'})
+  }, 1000) 
+})
+
+// Slots
+Vue.component('section-content', {
+  props: ['title'],
+  template: '<div><h1>{{title}}</h1><hr/><slot name="slot1"></slot><slot text="This is scoped slot"></slot><hr/></div>'
+})
+
+// Form control
+Vue.component('number-input', {
+  template: '<input ref="input" :value="value" @input="updateValue($event.target.value)" />',
+  props: ['value'],
+  methods: {
+    updateValue: function(value) {
+      this.$emit('input', ++value)
+    }
+  }
+})
+
+Vue.component('my-checkbox', {
+  model: {
+    prop: 'checked',
+    event: 'change'
+  },
+  props: {
+    checked: Boolean,
+    value: String
+  },
+  template: '<input type="checkbox" :checked="checked"></input>'
+})
+
+// Event popup
+Vue.component('button-counter', {
+  template: '<button @click="incrementCounter">{{ counter }} -- {{ childTotal }}</button>',
+  props: ['childTotal'],
+  data: function() {
+    return {
+      counter: 0
+    }
+  },
+  methods: {
+    incrementCounter: function() {
+      this.counter += 1;
+      this.$emit('increment')
+      this.$emit('update:childTotal', this.counter)
+    }
+  }
+})
+
+// Props
+Vue.component('child', {
+  props: ['message', 'myMessage'],
+  template: '<span>{{ message }} - {{ myMessage }}</span>',
+  data: function() {
+    console.log(typeof this.myMessage)
+    return {};
+  }
+});
+
 Vue.component('todo-item', {
   props: ['todo'],
   template: '<li>{{ todo.text }}</li>'
@@ -18,11 +82,15 @@ var localComponent = {
   template: "<h1>This is a local component</h1>"
 }
 
+var localComponent2 = {
+  template: "<h1>This XX is a local component</h1>"
+}
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   data: {
+    currentView: localComponent2,
     message: 'Hello World',
     seen: true,
     notSeen: false,
@@ -49,7 +117,9 @@ new Vue({
       middleName: "Wu",
       lastName: "Zhang"
     },
-    picked: ''
+    picked: '',
+    // event popup
+    total: 0,
   },
   methods: {
     reverseMessage: function() {
@@ -57,6 +127,10 @@ new Vue({
     },
     toggleInput: function() {
       this.ok = !this.ok
+    },
+    // event pop up
+    incrementTotal: function() {
+      this.total += 1;
     }
   },
   filters: {

@@ -6,6 +6,42 @@
   </head>
   <body>
     <div id="app">
+      <section-content title="Async Component">
+        <div slot="slot1">
+          <async-example></async-example>
+        </div>
+      </section-content>
+      <section-content title="Dynamic Content">
+        <div slot="slot1">
+          <component :is="currentView"></component>
+        </div>
+      </section-content>
+      <section-content title="Slot Section">
+        <p>This is slot section</p>
+        <p slot="slot1">This is named slot</p>
+        <template scope="props">
+          <p>{{ props.text }}</p>
+        </template>
+      </section-content>
+      <h1>Form control</h1>
+      <hr />
+        <number-input v-model="total"></number-input>
+        <my-checkbox v-model="no"></my-checkbox>
+      <hr />
+      <h1>Event popup</h1>
+      <hr />
+        <p>{{ total }}</p>
+        <button-counter @increment="incrementTotal"></button-counter>
+        <button-counter @increment="incrementTotal"></button-counter>
+        <button-counter :child-total.sync="total"></button-counter>
+      <hr />
+      <h1>Props</h1>
+      <hr />
+        <input v-model="message" />
+        <child message="Hello!!" :my-message="message"></child>
+        <child message="Hello!!" :my-message="1"></child>
+        <child message="Hello!!" my-message="1" abc="23324"></child>
+      <hr />
       {{ message | capitalize }}
       <a :title="message" href="#">This is a link</a>
       <p v-if="seen">You can see me</p>
