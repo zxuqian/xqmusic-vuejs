@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Xqmusic from '@/components/Xqmusic'
+import Xqmusic from '@/views/Xqmusic'
 
 Vue.use(Router)
 
