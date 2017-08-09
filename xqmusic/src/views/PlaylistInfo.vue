@@ -1,25 +1,25 @@
 <template>
     <div class="playlist_info">
-        <img src="../assets/playlist.jpeg" width="175" height="175" alt="" class="album_img">
+        <img :src="playlistDetail.coverImgUrl" width="175" height="175" alt="" class="album_img">
         <div class="playlist_detail">
             <div class="playlist_title">
                 <span class="icon">歌单</span><h1>我喜欢的音乐</h1>
                 <div class="count">
                     <div class="songs column">
                         <span>歌曲数</span>
-                        <b>85</b>
+                        <b>{{ playlistDetail.trackCount }}</b>
                     </div>
                     <div class="separator"></div>
                     <div class="listens column">
                         <span>收听数</span>
-                        <b>1924</b>
+                        <b>{{ playlistDetail.playCount }}</b>
                     </div>
                 </div>
             </div>
             <div class="creator">
-                <img src="../assets/logo.png" alt="" class="profile_img">
-                <div class="creator_name">雪灵杰</div>
-                <div class="create_date">2013-04-20创建</div>
+                <img :src="playlistDetail.creator.avatarUrl" alt="" class="profile_img">
+                <div class="creator_name">{{ playlistDetail.creator.nickname }}</div>
+                <div class="create_date">{{ playlistDetail.createTime | formatDatetime }}</div>
             </div>
             <div class="actions">
                 <button class="play_all"><i class="fa fa-play-circle-o" aria-hidden="true"></i>播放全部</button>
@@ -34,7 +34,18 @@
 </template>
 <script>
     export default {
-        name: 'playlistInfo'
+        name: 'playlistInfo',
+        computed: {
+            playlistDetail() {
+                return this.$store.state.playlistDetail.playlist
+            }
+        },
+        filters: {
+            formatDatetime(dateTime) {
+                let theDate = new Date(dateTime)
+                return theDate.getFullYear() + "-" + ("0" + ((theDate.getMonth() + 1))).slice(-2) + "-" + ("0" + (theDate.getDate())).slice(-2)
+            }
+        }
     }
 </script>
 <style>
@@ -45,6 +56,7 @@
         width: 100%;
         padding: 30px;
         box-sizing: border-box;
+        flex-shrink: 0;
     }
 
     .playlist_detail {

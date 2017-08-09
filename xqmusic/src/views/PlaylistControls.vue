@@ -2,12 +2,12 @@
     <div class="play_controls">
         <div class="controls">
             <button class="back"><i class="fa fa-step-backward" aria-hidden="true"></i></button>
-            <button class="pause_play"><i class="fa fa-play" aria-hidden="true"></i></button>
+            <button class="pause_play" @click="playOrPause"><i :class="playButtonClass" aria-hidden="true"></i></button>
             <button class="next"><i class="fa fa-step-forward" aria-hidden="true"></i></button>
         </div>
         <div class="progressbar_container">  
             <div class="progressbar">
-                <div class="progress"></div>
+                <div class="progress" :style="progress"></div>
                 <div class="indicator"><i class="fa fa-circle" aria-hidden="true"></i></div>
             </div>
             <div class="time">
@@ -30,7 +30,33 @@
 </template>
 <script>
 export default {
-  name: 'playlistControl'
+  name: 'playlistControl',
+  methods: {
+    isPlaying() {
+        if(this.$store.state.currentPlaying != null && this.$store.state.currentPlaying.playing()) {
+            return true;
+        } else {
+            return false;
+        }
+    },
+    playOrPause() {
+        this.$store.commit('playOrPauseMusic')
+    }
+  },
+  computed: {
+      playButtonClass() {
+          if(this.isPlaying()) {
+              return 'fa fa-pause';
+          } else {
+              return 'fa fa-play';
+          }
+      },
+      progress() {
+         return {
+             width: this.$store.state.progress + '%'
+         }
+      }
+  }
 }
 </script>
 <style>

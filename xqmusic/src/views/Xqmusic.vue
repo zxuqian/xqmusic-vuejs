@@ -82,6 +82,7 @@ export default {
         overflow: hidden;
         justify-content: flex-start;
         height: 100%;
+        width: 100%;
         top: 60px;
     }
 
@@ -96,6 +97,8 @@ export default {
     .music_area {
         flex-flow: column;
         width: 100%;
+        height: 100%;
+        overflow-y: auto;
     }
 
     .music_list_container {

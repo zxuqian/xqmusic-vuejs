@@ -29,7 +29,7 @@
         <div class="separator"></div>
 
         <div class="profile">
-            <img class="profile_img" src="../assets/logo.png" alt="">
+            <img class="profile_img" :src="user.profile.avatarUrl" alt="">
             <i class="fa fa-caret-down" aria-hidden="true"></i>
         </div>
     </header>
@@ -37,7 +37,12 @@
 
 <script>
     export default {
-        name: 'appHeader'
+        name: 'appHeader',
+        computed: {
+            user() {
+                return this.$store.state.user
+            }
+        }
     }
 </script>
 

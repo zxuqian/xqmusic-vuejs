@@ -21,34 +21,31 @@
                 <li>
                     <span>创建的歌单</span>
                     <ul>
-                        <li><i class="fa fa-heart" aria-hidden="true"></i>我喜欢的音乐</li>
-                        <li><i class="fa fa-music" aria-hidden="true"></i>健身专用</li>
-                        <li><i class="fa fa-music" aria-hidden="true"></i>旧台式机</li>
-                        <li><i class="fa fa-music" aria-hidden="true"></i>20160206</li>
-                        <li><i class="fa fa-music" aria-hidden="true"></i>王萌</li>
-                        <li><i class="fa fa-music" aria-hidden="true"></i>老友记</li>
-                        <li><i class="fa fa-music" aria-hidden="true"></i>中文歌</li>
-                        <li><i class="fa fa-music" aria-hidden="true"></i>欧美流行音乐，让心灵澎湃</li>
+                        <li v-for="playlist in musicListCreatedByMe" :key="playlist.id">
+                            <template v-if="playlist.specialType === 5">
+                                <i  class="fa fa-heart" aria-hidden="true"></i>我喜欢的音乐
+                            </template>
+                            <template v-else>
+                                <i class="fa fa-music" aria-hidden="true"></i>{{ playlist.name }}
+                            </template>
+                        </li>
                     </ul>
                 </li>
                 <li>
                     <span>收藏的歌单</span>
                     <ul>
-                        <li><i class="fa fa-music" aria-hidden="true"></i>好久不见，陪我长大的华语乐坛</li>
-                        <li><i class="fa fa-music" aria-hidden="true"></i>100首经典英文老歌</li>
-                        <li><i class="fa fa-music" aria-hidden="true"></i>德国北部普勒录音室`发烧音质</li>
-                        <li><i class="fa fa-music" aria-hidden="true"></i>前奏秒杀一切</li>
-                        <li><i class="fa fa-music" aria-hidden="true"></i>磁性，沧桑</li>
-                        <li><i class="fa fa-music" aria-hidden="true"></i>那些年最迷人的声音</li>
+                        <li v-for="playlist in musicListFavoratedByMe" :key="playlist.id">
+                            <i class="fa fa-music" aria-hidden="true"></i>{{ playlist.name }}
+                        </li>
                     </ul>
                 </li>
             </ul>
         </div>
         <div class="sidebar_bottom">
-            <img src="../assets/album.jpg" width="65" height="65" alt="">
+            <img :src="albumPic" width="65" height="65" alt="">
             <div class="song_info">
-                <p>Hanover</p>
-                <p>Fio Rida, Taio Cruz</p>
+                <p>{{ musicName }}</p>
+                <p>{{ author }}</p>
             </div>
             <div class="actions">
                 <i class="fa fa-share-square-o" aria-hidden="true"></i>
@@ -61,9 +58,31 @@
 <script>
     export default {
         name: 'sidebar',
-        data:  function() {
-            return {
-                musicListCreatedProp: this.$store.state.musicListCreatedProp
+        computed: {
+            musicListCreatedByMe() {
+                return this.$store.state.musicList.playlist.filter((playlist) => {
+                    return playlist.subscribed == false;
+                })
+            },
+            musicListFavoratedByMe() {
+                return this.$store.state.musicList.playlist.filter((playlist) => {
+                    return playlist.subscribed == true;
+                })
+            },
+            albumPic() {
+                if(this.$store.state.songInfo != null) {
+                    return this.$store.state.songInfo.al.picUrl
+                }
+            },
+            musicName() {
+                if(this.$store.state.songInfo != null) {
+                    return this.$store.state.songInfo.name
+                }
+            },
+            author() {
+                if(this.$store.state.songInfo != null) {
+                    return this.$store.state.songInfo.ar.map((ar) => { return ar.name }).join(', ')
+                }
             }
         }
     }

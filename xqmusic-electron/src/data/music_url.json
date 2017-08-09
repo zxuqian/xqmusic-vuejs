@@ -1,0 +1,21 @@
+{
+  "data": [
+    {
+      "id": 28265148,
+      "url": "http://m10.music.126.net/20170808005134/4a855efbf8a7e5c972f3b3b431943599/ymusic/37a2/b585/3440/07a73345c613392352941077e11277c9.flac",
+      "br": 1083985,
+      "size": 30093247,
+      "md5": "07a73345c613392352941077e11277c9",
+      "code": 200,
+      "expi": 1200,
+      "type": "flac",
+      "gain": -0.6,
+      "fee": 0,
+      "uf": null,
+      "payed": 0,
+      "flag": 0,
+      "canExtend": false
+    }
+  ],
+  "code": 200
+}
