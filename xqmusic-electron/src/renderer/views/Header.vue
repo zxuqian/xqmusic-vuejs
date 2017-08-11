@@ -1,9 +1,9 @@
 <template>
-      <header>
+      <header class="row column_center_middle">
         <div class="logo">
             <h1 class="logo_text">Qian音乐</h1>
         </div>
-        <div class="history">
+        <div class="history row_center_middle">
             <button class="left">
                 <i class="fa fa-angle-left" aria-hidden="true"></i>
             </button>
@@ -11,13 +11,10 @@
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
             </button>
         </div>
-        <div class="search_box">
-            <i class="fa fa-search" aria-hidden="true"></i><input type="text" name="" id="search_input" placeholder="搜索音乐，歌手，歌词，用户">
+        <div class="search_box column_center_middle">
+            <i class="fa fa-search" aria-hidden="true"></i><input type="text" name="" id="search_input" placeholder="搜索播放列表音乐">
         </div>
         <div class="header_right">
-            <div class="download">
-                <span>下载暂停<i class="fa fa-arrow-circle-down" aria-hidden="true"></i></span>
-            </div>
             <div class="message">
                 <i class="fa fa-envelope-o" aria-hidden="true"></i>
             </div>
@@ -46,23 +43,19 @@
     }
 </script>
 
-<style>
+<style lang="scss">
     /* header */
     header {
         width: 100%;
         height: 65px;
         padding-top: 10px;
-        background: rgb(170, 51, 25);
+        background: $main-background;
         -webkit-app-region: drag;
-    }
-
-    header, div {
         display: flex;
     }
 
-    .logo, .history, .search_box, .header_right, .profile {
-        display: flex;
-        align-items: center;
+    .logo {
+        width: $logo_siderbar_width;
     }
 
     .logo_text {
@@ -71,14 +64,16 @@
         padding-right: 50px;
     }
 
+    .history {
+        margin-left: 20px;
+    }
     .history button {
-        width: 25px;
-        height: 25px;
-        border: 1px solid rgb(144, 37, 19);
+        width: 30px;
+        height: 30px;
+        border: none;
         background: transparent;
-        font-size: 16px;
+        font-size: 25px;
         font-weight: 200;
-        box-shadow: 0px 0px 1px rgb(199, 97, 74);
     }
 
     .history button i {
@@ -97,14 +92,14 @@
         border-radius: 10px;
         border: none;
         padding: 5px;
-        padding-left: 30px;
+        padding-left: 25px;
         margin-left: 5px;
         width: 230px;
     }
 
     .search_box .fa-search {
         position: relative;
-        left: 30px;
+        left: 25px;
         color: rgb(184, 184, 184);
     }
 
@@ -116,10 +111,6 @@
     .header_right * {
         padding-right: 12px;
         color: #ffffff;
-    }
-
-    .download {
-        font-size: 14px;
     }
 
     .download i {
@@ -151,7 +142,7 @@
 
     .separator {
         align-self: stretch;
-        border-left: 1px solid rgb(157, 26, 2);
-        box-shadow: 1px 0px rgb(171, 67, 67);
+        border-left: 1px solid #464646;
+        box-shadow: 1px 0px #000000;
     }
 </style>

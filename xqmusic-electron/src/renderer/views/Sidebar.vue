@@ -3,40 +3,16 @@
         <div class="sidebar_top">
             <ul>
                 <li>
-                    <span>推荐</span>
+                    <span>库</span>
                     <ul>
-                        <li><i class="fa fa-music" aria-hidden="true"></i>发现音乐</li>
-                        <li><i class="fa fa-podcast" aria-hidden="true"></i>私人FM</li>
-                        <li><i class="fa fa-youtube-play" aria-hidden="true"></i>MV</li>
-                        <li><i class="fa fa-users" aria-hidden="true"></i>朋友</li>
+                        <li><i class="fa fa-music" aria-hidden="true"></i>最近播放</li>
+                        <li><i class="fa fa-download" aria-hidden="true"></i>本地音乐</li>
                     </ul>
                 </li>
                 <li>
-                    <span>我的音乐</span>
+                    <span>播放列表</span>
                     <ul>
-                        <li><i class="fa fa-music" aria-hidden="true"></i>iTunes音乐</li>
-                        <li><i class="fa fa-download" aria-hidden="true"></i>下载的音乐</li>
-                    </ul>
-                </li>
-                <li>
-                    <span>创建的歌单</span>
-                    <ul>
-                        <li v-for="playlist in musicListCreatedByMe" :key="playlist.id">
-                            <template v-if="playlist.specialType === 5">
-                                <i  class="fa fa-heart" aria-hidden="true"></i>我喜欢的音乐
-                            </template>
-                            <template v-else>
-                                <i class="fa fa-music" aria-hidden="true"></i>{{ playlist.name }}
-                            </template>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <span>收藏的歌单</span>
-                    <ul>
-                        <li v-for="playlist in musicListFavoratedByMe" :key="playlist.id">
-                            <i class="fa fa-music" aria-hidden="true"></i>{{ playlist.name }}
-                        </li>
+                        <li><i  class="fa fa-heart" aria-hidden="true"></i>我喜欢的音乐</li>
                     </ul>
                 </li>
             </ul>
@@ -88,13 +64,11 @@
     }
 </script>
 
-<style>
+<style lang="scss">
 /* sidebar area */
     .sidebar {
-        width: 220px;
+        width: $logo_siderbar_width;
         min-width: 220px;
-        border: 1px solid #dddddd;
-        border-bottom: none;
         height: 100%;
         display: flex;
         flex-flow: column;
@@ -103,6 +77,8 @@
     .sidebar_top {
         height: 100%;
         overflow: auto;
+        border-right: 1px solid #464646;
+        box-shadow: 1px 0px #000000;
     }
 
     .sidebar_top ul {
@@ -134,7 +110,6 @@
     }
 
     .sidebar_bottom {
-        border-top: 1px solid #dddddd;
         align-items: center;
     }
 

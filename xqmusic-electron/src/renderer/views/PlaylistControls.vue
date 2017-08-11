@@ -89,14 +89,14 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="scss">
     /* play controls */
     .play_controls {
         padding-top: 15px;
         padding-bottom: 10px;
         align-items: center;
         width: 100%;
-        border-top: 1px solid #dddddd;
+        background: $main-background + #111111;
         justify-content: space-between;
         padding-bottom: 15px;
     }
@@ -110,8 +110,8 @@ export default {
         width: 35px;
         height: 35px;
         margin-left: 20px;
-        border: none;
-        background: rgb(200, 61, 63);
+        border: 1px solid $border-color-lighter;
+        background: none;
     }
 
     .controls > button:nth-child(2) {
@@ -142,7 +142,7 @@ export default {
 
     .progress {
         height: 4px;
-        background: rgb(200, 61, 63);
+        background: $primary-color;
         border-radius: 5px;
         align-self: flex-start;
     }
@@ -161,7 +161,7 @@ export default {
 
     .indicator i {
         font-size: 5px;
-        color: rgb(200, 61, 63);
+        color: $primary-color;
     }
 
     .time {
