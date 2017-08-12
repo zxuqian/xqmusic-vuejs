@@ -12,7 +12,7 @@
 ### 运行项目
 此项目还未打包为可执行文件，所以需要用到npm手动运行，参考如下步骤
 
-#### Build Setup
+#### 编译步骤
 ``` bash
 # 克隆本库
 git clone https://github.com/zxuqian/vuejs/tree/master/xqmusic-electron
