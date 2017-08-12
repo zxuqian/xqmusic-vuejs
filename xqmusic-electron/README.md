@@ -15,7 +15,7 @@ Xqmusic是一款本地音乐播放器，目前作为学习vuejs的练手项目�
 #### 编译步骤
 ``` bash
 # 克隆本库
-git clone https://github.com/zxuqian/vuejs/tree/master/xqmusic-electron
+git clone https://github.com/zxuqian/vuejs.git
 
 # 安装依赖
 npm install
