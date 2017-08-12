@@ -7,11 +7,11 @@
         </div>
         <div class="progressbar_container">  
             <div class="progressbar" @click="seekMusic">
-                <div class="progress" :style="progress"></div>
+                <div class="progress" :style="progressStyle"></div>
                 <div class="indicator"><i class="fa fa-circle" aria-hidden="true"></i></div>
             </div>
             <div class="time">
-                <span class="current">{{ currentDuration }}</span>/<span class="total">{{ totalDuration }}</span>
+                <span class="current">{{ currentDuration | getTimeString }}</span>/<span class="total">{{ duration | getTimeString }}</span>
             </div>
         </div>
         <div class="volume_control">
@@ -29,63 +29,101 @@
     </div> 
 </template>
 <script>
+/* Audio library */
+import { Howl } from 'howler'
+
 export default {
   name: 'playlistControl',
   data: function() {
       return {
-          offsetProgress: 0
+          offsetProgress: 0,
+          duration: 0,
+          progress: 0,
+          playButtonClass: 'fa fa-play'
       }
   },
   methods: {
-    isPlaying() {
-        if(this.$store.state.currentPlaying != null && this.$store.state.currentPlaying.playing()) {
-            return true;
-        } else {
-            return false;
-        }
-    },
     playOrPause() {
-        this.$store.commit('playOrPauseMusic')
+        if(this.currentPlayingIndex == -1) {
+            return
+        } else {
+            if(this.sound == null) {
+                let path = this.$store.state.tracks[this.currentPlayingIndex].path
+                this.sound = new Howl({src: 'file://' + path})
+                var intervalId = -1;
+                this.sound.on('play', () => {
+                    this.playButtonClass = 'fa fa-pause'
+                    this.duration = Math.ceil(this.sound.duration())
+                    // move the progress immediate for once
+                    this.progress = (this.sound.seek() / this.duration) * 100
+
+                    // Then move every second
+                    intervalId = setInterval(() => {
+                        this.progress = (this.sound.seek() / this.duration) * 100
+                    }, 1000)
+                })
+                this.sound.on('pause', () => {
+                    this.playButtonClass = 'fa fa-play'
+                    if(intervalId != -1) {
+                        // When paused, clear the interval
+                        clearInterval(intervalId)
+                    }
+                })
+                this.sound.play()
+            } else {
+                if(this.sound.playing()){
+                    // Set interval, for progress bar to be updated
+                    this.sound.pause()
+                } else {
+                    this.sound.play()
+                }
+            }
+        }
     },
     seekMusic(event) {
         // Get the percentage of clicked x coordinate to the progress bar width, remove the width of the indicator
         // 7 is half width of the indicator, for centering the indicator in the progress bar when the mouse clicked.
         let percentage = (event.pageX - event.currentTarget.offsetLeft) / event.currentTarget.offsetWidth
-        this.$data.offsetProgress = 7 / event.currentTarget.offsetWidth * 100
+        this.offsetProgress = 7 / event.currentTarget.offsetWidth * 100
         this.progress = percentage * 100
-
-    },
-    getTimeString(duration) {
+        this.sound.seek(this.duration * percentage)
+    }
+    
+  },
+  computed: {
+      currentDuration() {
+          if(this.progress > 0) {
+             return this.duration * this.progress / 100
+          } else {
+              return 0
+          }
+      },
+      progressStyle() {
+          return { width: this.progress + this.offsetProgress + '%' }
+      },
+      currentPlayingIndex() {
+          return this.$store.state.currentPlayingIndex
+      }
+  },
+  watch: {
+      currentPlayingIndex(newVal) {
+          if(newVal == -1) {
+              return 
+          } else {
+              if(this.sound != null) {
+                 this.sound.stop()
+                 this.sound = null
+              } 
+              this.playOrPause()
+          }
+      }
+  },
+  filters: {
+      getTimeString(duration) {
         let minute = ('0' + Math.floor(duration / 60)).slice(-2)
         let second = ('0' + Math.trunc(duration % 60)).slice(-2)
         return minute + ':' + second
     }
-  },
-  computed: {
-      playButtonClass() {
-          if(this.isPlaying()) {
-              return 'fa fa-pause';
-          } else {
-              return 'fa fa-play';
-          }
-      },
-      totalDuration() {
-          let total = this.$store.state.duration
-          return this.getTimeString(total)
-      },
-      currentDuration() {
-          let total = this.$store.state.duration
-          return this.getTimeString(total * this.$store.state.progress / 100)
-      },
-      progress: {
-          get: function() {
-              return { width: this.$store.state.progress + this.$data.offsetProgress + '%' }
-          },
-          set: function(percentage) {
-              this.$store.state.progress = percentage;
-              this.$store.commit('seekMusic')
-          }           
-      }
   }
 }
 </script>

@@ -15,10 +15,10 @@
                 <div class="td">
                     <i class="fa fa-heart liked" aria-hidden="true"></i>
                 </div>
-                <div class="td">{{ track.name }}</div>
-                <div class="td">{{ track.ar | formatAuthor }}</div>
-                <div class="td">{{ track.al.name }}</div>
-                <div class="td">{{ track.dt | musicLength }}</div>
+                <div class="td">{{ track.title }}</div>
+                <div class="td">{{ track.artists | formatArtists }}</div>
+                <div class="td">{{ track.album }}</div>
+                <div class="td">{{ track.duration | duration }}</div>
             </div>
         </div>    
     </div>            
@@ -38,7 +38,7 @@ export default {
   },
   computed: {
       tracks() {
-          return this.$store.state.playlistDetail.playlist.tracks
+          return this.$store.state.tracks
       }
   },
   methods: {
@@ -49,21 +49,17 @@ export default {
           //} else {
           //    sound.play()      
           //}
-          this.$store.commit('playOrPauseMusic')
-          //this.$store.state.songInfo = 
-          if(this.$store.state.songInfo == null) {
-              this.$store.state.songInfo = track
-          }
-          
+          this.$store.commit('updateCurrentPlayingIndex', track.id)
       }
   },
   filters: {
-      musicLength(dt) {
-          let temp = new Date(dt);
-          return ("0" + temp.getMinutes()).slice(-2) + ":" + ("0" + temp.getSeconds()).slice(-2);
+      duration(duration) {
+          let minute = ('0' + Math.floor(duration / 60)).slice(-2)
+          let second = ('0' + Math.trunc(duration % 60)).slice(-2)
+          return minute + ":" + second;
       },
-      formatAuthor(arArray) {
-          return arArray.map((ar) => { return ar.name }).join(', ')
+      formatArtists(arArray) {
+          return arArray.map((ar) => { return ar }).join(', ')
       }
   }
 }
@@ -92,8 +88,9 @@ export default {
         .th, .td {
             padding: 3px;
             align-items: center;
+            vertical-align: middle;
             border-bottom: 1px solid $border-color;
-            padding: 10px 0px;
+            height: 30px;
         }
 
         .tbody {
@@ -146,6 +143,7 @@ export default {
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
+            line-height: 30px;
             display: block;
         }
 

@@ -12,18 +12,35 @@
                 <div class="create_date">时间：{{ playlistDetail.createTime | formatDatetime }}</div>
             </div>
             <div class="actions">
-                <button class="play_all"><i class="fa fa-play-circle-o" aria-hidden="true"></i>播放</button>
+                <button class="play_all"><i class="fa fa-play-circle-o" aria-hidden="true"></i>播放全部</button>
+                <button class="add_music" @click="chooseMusic">+ 添加音乐</button>
             </div>
             
         </div>
     </div>
 </template>
 <script>
+    import { remote } from 'electron'
+    import fs from 'fs'
+
+    var dialog = remote.dialog
+
     export default {
         name: 'playlistInfo',
         computed: {
             playlistDetail() {
                 return this.$store.state.playlistDetail.playlist
+            }
+        },
+        methods: {
+            chooseMusic() {
+                let paths = dialog.showOpenDialog({
+                    properties: ['openFile', 'openDirectory', 'multiSelections'],
+                    filters: [
+                        { name: 'Music Files', extensions: ['mp3', 'flac', 'wav', 'ogg']}
+                    ]
+                })
+                this.$store.dispatch('updateTracks', paths)
             }
         },
         filters: {
@@ -97,7 +114,6 @@
 
     .playlist_detail .actions i {
         margin-right: 5px;
-        font-size: 16px;
     }
 
     .playlist {
