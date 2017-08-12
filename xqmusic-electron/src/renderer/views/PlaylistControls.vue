@@ -53,7 +53,7 @@ export default {
                 var intervalId = -1;
                 this.sound.on('play', () => {
                     this.playButtonClass = 'fa fa-pause'
-                    this.duration = Math.ceil(this.sound.duration())
+                    this.duration = Math.trunc(this.sound.duration())
                     // move the progress immediate for once
                     this.progress = (this.sound.seek() / this.duration) * 100
 
@@ -69,6 +69,15 @@ export default {
                         clearInterval(intervalId)
                     }
                 })
+                this.sound.on('end', () => {
+                    this.playButtonClass = 'fa fa-play'
+                    var self = this
+                    setTimeout(() => {
+                        self.currentPlayingIndex = ++self.currentPlayingIndex < self.$store.state.tracks.length ? self.currentPlayingIndex : -1
+                    }, 2000)
+                    
+                    
+                })
                 this.sound.play()
             } else {
                 if(this.sound.playing()){
@@ -83,9 +92,10 @@ export default {
     seekMusic(event) {
         // Get the percentage of clicked x coordinate to the progress bar width, remove the width of the indicator
         // 7 is half width of the indicator, for centering the indicator in the progress bar when the mouse clicked.
-        let percentage = (event.pageX - event.currentTarget.offsetLeft) / event.currentTarget.offsetWidth
-        this.offsetProgress = 7 / event.currentTarget.offsetWidth * 100
+        let percentage = (event.pageX + 5 - event.currentTarget.offsetLeft) / event.currentTarget.offsetWidth
+        //this.offsetProgress = 6 / event.currentTarget.offsetWidth
         this.progress = percentage * 100
+
         this.sound.seek(this.duration * percentage)
     }
     
@@ -99,10 +109,16 @@ export default {
           }
       },
       progressStyle() {
-          return { width: this.progress + this.offsetProgress + '%' }
+          return { width: this.progress + '%' }
       },
-      currentPlayingIndex() {
-          return this.$store.state.currentPlayingIndex
+      currentPlayingIndex: {
+          get: function() {
+              return this.$store.state.currentPlayingIndex
+          },
+          set: function(newVal) {
+              this.$store.commit('updateCurrentPlayingIndex', newVal)
+          }
+          
       }
   },
   watch: {
@@ -186,9 +202,9 @@ export default {
     }
 
     .indicator {
-        width: 13px;
-        height: 13px;
-        margin-left: -13px;
+        width: 12px;
+        height: 12px;
+        margin-left: -12px;
         background: white;
         border: 1px solid #cccccc;
         border-radius: 50px;

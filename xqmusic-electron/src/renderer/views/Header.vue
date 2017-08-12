@@ -62,6 +62,7 @@
         color: #FFFFFF;
         padding-left: 20px;
         padding-right: 50px;
+        font-size: 28px;
     }
 
     .history {
